@@ -1,6 +1,7 @@
 import express from "express";
 import bodyParser from "body-parser";
 import pg from 'pg';
+import 'dotenv/config'
 
 const app = express();
 const port = 3000;
@@ -8,11 +9,11 @@ const port = 3000;
 let totalCorrect = 0;
 
 const db=new pg.Client({
-  user:process.env.PG_USER,
-  host:process.env.PG_HOST,
-  port:Number(process.env.PG_PORT),
-  database:process.env.PG_DATABASE,
-  password:process.env.PG_PASSWORD
+  user: process.env.PG_USER,
+  host: process.env.PG_HOST,
+  database: process.env.PG_DATABASE,
+  password: process.env.PG_PASSWORD,
+  port: Number(process.env.PG_PORT),
 });
 
 db.connect();
@@ -23,6 +24,7 @@ app.use(express.static("public"));
 
 let currentQuestion = {};
 let quiz=[];
+
 db.query('SELECT * FROM capitals',(err,res)=>{
   if(err){
     console.error('Error executing query',err.stack);
